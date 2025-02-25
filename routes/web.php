@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $pw = env("PWD");
+    // dd($pw);
+    return view('index', ['pw' => $pw]);
+})->name('index');
 
 
 // 

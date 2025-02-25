@@ -1,0 +1,9 @@
+.test{
+    color: rgb(71, 193, 193);
+    background-color: black;
+}
+.bgimg{
+    background-image: url(../img/gehenna.png);
+    width: 50px;
+    height: 50px;
+}
