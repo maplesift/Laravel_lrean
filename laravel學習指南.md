@@ -1,24 +1,94 @@
 # github下載
 
-- git clone https://github.com/ xxxx
+- git clone https://github.com/ xxxx 自行去github複製
 
-<!-- 加入函式庫 -->
+### 加入函式庫
 - composer install
-<!-- 建立env -->
+### 建立env
 -    cp .env.example .env
 - OR copy .env.example .env
-<!-- 幫env加入key -->
+### 幫env加入key
 - php artisan key:generate
-<!-- env設定資料庫 -->
-- DB_CONNECTION=mysql
-- DB_HOST=127.0.0.1
-- DB_PORT=3306
-    <!-- 資料庫名稱 需再去phpadmin建立同名資料庫 -->
-- DB_DATABASE=laravel_test
-- DB_USERNAME=root
-- DB_PASSWORD=
-<!-- 加入空資料表 -->
-- php artisan migrate
-<!--  -->
-- php artisan db:seed
-- php artisan serve
+### env設定資料庫
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        資料庫名稱 需再去phpadmin建立同名資料庫
+        DB_DATABASE=laravel_test
+        DB_USERNAME=root
+        DB_PASSWORD=
+### 加入空資料表
+-   php artisan migrate
+-   php artisan db:seed
+-   php artisan serve
+
+===============================
+
+# 檔案遷移
+ - route:
+ - env放PWD
+```php
+Route::get('/', function () {
+    $pw = env("PWD");
+    // dd($pw);
+    return view('index', ['pw' => $pw]);
+})->name('index');
+```
+- 通常都放在 public/assets/css | and img  | and js
+- 路徑ex:
+```html
+    <link rel="stylesheet" href="{{asset('assets\css\css.css')}}">
+    <link rel="icon" href="{{asset('assets\img\Marie Antoinette (Summer) 1.png')}}" sizes="32x32" type="image/png">
+```
+
+===============================
+# Controller 
+- [官網:controller](https://laravel.com/docs/11.x/controllers)
+-  終端機輸入: 
+```cmd
+<!-- (Photo)Controller (為自訂名稱) -->
+php artisan make:controller PhotoController --resource
+```
+- 在routes/web輸入:
+```php
+use App\Http\Controllers\(Photo)Controller;
+Route::resource('(photos)', (Photo)Controller::class);
+```
+- 在app\Http\Controllers\找到(Photo)Controller
+- 可在function輸入:dd('(text)') 確認是否連到該網址
+- 可在終端機輸入 php artisan route:list 查看route的網址
+```php
+    public function index()
+    {
+        $data=
+        [   
+            [
+                'id'=>1,
+                'name'=> 'apple',
+            ],
+            [
+                'id'=>2,
+                'name'=> 'babana',
+            ],
+            [
+                'id'=>3,
+                'name'=> 'cat',
+            ]
+        ];
+        return view('student.index',['data'=>$data]);
+    }
+```
+- 可在controller加上新的function
+```php
+    public function del()
+    {
+        dd('hi del');
+    }
+```
+這就必須到routes\web去新增:
+```php
+Route::get('/students/del', [StudentController::class, 'del']);
+```
+
+
+======================================
