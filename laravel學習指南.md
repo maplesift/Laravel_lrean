@@ -24,7 +24,7 @@
 
 ===============================
 
-# 檔案遷移
+# 檔案遷移(?)
  - route:
  - env放PWD
 ```php
@@ -192,7 +192,7 @@ return view('student.index',['data'=>$data]);
     <td>{{$val->id}}</td>
     <td>{{$val->name}} </td>
     <td>{{$val->mobile}} </td> 
-{{-- <td></td> --}}
+
 </tr>
 
 @endforeach
