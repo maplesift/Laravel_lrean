@@ -176,9 +176,7 @@ return new class extends Migration
 use Illuminate\Support\Facades\DB;
 // 去找到資料
 $users = DB::table('users')->get();
-// =====================================================
-
-
+// =================================================================
 
 
 // 實際做:
@@ -198,3 +196,7 @@ return view('student.index',['data'=>$data]);
 @endforeach
 
 ```
+### 一次建立migrations/controller/resource
+==================================
+php artisan make:model Apple -mcr
+php artisan make:model Student -mcr
