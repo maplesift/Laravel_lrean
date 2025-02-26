@@ -90,5 +90,23 @@ Route::resource('(photos)', (Photo)Controller::class);
 Route::get('/students/del', [StudentController::class, 'del']);
 ```
 
-
+# 0226 資料庫
+## [官網](https://laravel.com/docs/11.x/migrations#generating-migrations)
 ======================================
+<!-- 範例 -->
+php artisan make:migration create_flights_table
+<!-- 創造一個cars table -->
+php artisan make:migration create_cars_table
+<!-- 在資料庫創造資料表 -->
+- php artisan migrate
+
+```php
+        Schema::create('dogs', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('name'); //可自創資料表欄位 名稱
+            $table->string('address'); //可自創資料表欄位 名稱
+        }); 
+```
+<!-- 創造資料表的動作:回到上一動   -->
+php artisan migrate:rollback
