@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 class StudentController extends Controller
 {
     /**
@@ -11,23 +11,24 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $data=
-        [   
-            [
-                'id'=>1,
-                'name'=> 'apple',
-            ],
-            [
-                'id'=>2,
-                'name'=> 'babana',
-            ],
-            [
-                'id'=>3,
-                'name'=> 'cat',
-            ]
+        // $data=
+        // [   
+        //     [
+        //         'id'=>1,
+        //         'name'=> 'apple',
+        //     ],
+        //     [
+        //         'id'=>2,
+        //         'name'=> 'babana',
+        //     ],
+        //     [
+        //         'id'=>3,
+        //         'name'=> 'cat',
+        //     ]
 
-        ];
-
+        // ];
+        $data = DB::table('students')->get();
+        // dd($data);
         return view('student.index',['data'=>$data]);
     }
 

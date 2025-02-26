@@ -21,17 +21,17 @@
           <tr>
             <th>id</th>
             <th>name</th>
-            {{-- <th>Email</th> --}}
+            <th>mobile</th>
           </tr>
         </thead>
         <tbody>
                         
-            @foreach ($data as $val)
-
+          @foreach ($data as $val)
             <tr>
-                <td>{{$val['id']}}</td>
-                <td>{{$val['name']}} </td>
-                {{-- <td></td> --}}
+                <td>{{$val->id}}</td>
+                <td>{{$val->name}} </td>
+                <td>{{$val->mobile}} </td> 
+           {{-- <td></td> --}}
             </tr>
 
             @endforeach

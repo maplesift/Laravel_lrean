@@ -92,13 +92,16 @@ Route::get('/students/del', [StudentController::class, 'del']);
 
 # 0226 資料庫
 ## [官網](https://laravel.com/docs/11.x/migrations#generating-migrations)
+
 ======================================
 <!-- 範例 -->
 php artisan make:migration create_flights_table
 <!-- 創造一個cars table -->
 php artisan make:migration create_cars_table
-<!-- 在資料庫創造資料表 -->
+<!-- 在資料庫創造資料表 (執行/前進一步) -->
 - php artisan migrate
+<!-- 創造資料表的動作:回到上一動 (退一步)   -->
+- php artisan migrate:rollback
 
 ```php
         Schema::create('dogs', function (Blueprint $table) {
@@ -108,5 +111,90 @@ php artisan make:migration create_cars_table
             $table->string('address'); //可自創資料表欄位 名稱
         }); 
 ```
-<!-- 創造資料表的動作:回到上一動   -->
-php artisan migrate:rollback
+
+### 在資料庫增加資料表(create)
+```php
+    public function up(): void
+    {           // create:創造資料表
+        Schema::create('dogs', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('name');
+            $table->string('address');
+            $table->string('love');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('dogs');
+    }
+```
+
+### 在資料表增加欄位(table)
+```php
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {         //需要增加欄位 而不是資料表
+        Schema::table('dogs', function (Blueprint $table) {
+            $table->integer('love');
+        });
+        Schema::table('cars', function (Blueprint $table) {
+            $table->integer('love');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('dogs', function (Blueprint $table) {
+            $table->dropColumn('love');
+        });
+        Schema::table('cars', function (Blueprint $table) {
+            $table->dropColumn('love');
+        });
+    }
+};
+```
+### 從資料庫query
+
+[官網:query](https://laravel.com/docs/11.x/queries#running-database-queries)
+===============================
+```php
+// ex:
+// controller內
+// 引入db
+use Illuminate\Support\Facades\DB;
+// 去找到資料
+$users = DB::table('users')->get();
+// =====================================================
+
+
+
+
+// 實際做:
+$data = DB::table('students')->get();
+// dd($data);
+return view('student.index',['data'=>$data]);
+
+// 在view輸入
+@foreach ($data as $val)
+<tr>
+    <td>{{$val->id}}</td>
+    <td>{{$val->name}} </td>
+    <td>{{$val->mobile}} </td> 
+{{-- <td></td> --}}
+</tr>
+
+@endforeach
+
+```
