@@ -11,25 +11,12 @@ class StudentController extends Controller
      */
     public function index()
     {
-        // $data=
-        // [   
-        //     [
-        //         'id'=>1,
-        //         'name'=> 'apple',
-        //     ],
-        //     [
-        //         'id'=>2,
-        //         'name'=> 'babana',
-        //     ],
-        //     [
-        //         'id'=>3,
-        //         'name'=> 'cat',
-        //     ]
-
-        // ];
+        // dd('hello index');
         $data = DB::table('students')->get();
-        // dd($data);
-        return view('student.index',['data'=>$data]);
+        // $data = DB::select('SELECT * FROM students');
+        // $data = DB::table('students')->select('id','name', 'mobile as my_mobile')->get();
+        dd($data);
+        // return view('student.index',['data'=>$data]);
     }
 
     /**

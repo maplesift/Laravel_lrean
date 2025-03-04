@@ -181,7 +181,7 @@ $users = DB::table('users')->get();
 
 // 實際做:
 $data = DB::table('students')->get();
-// dd($data);
+dd($data);
 return view('student.index',['data'=>$data]);
 
 // 在view輸入
@@ -200,3 +200,46 @@ return view('student.index',['data'=>$data]);
 ==================================
 php artisan make:model Apple -mcr
 php artisan make:model Student -mcr
+
+
+
+=============================================================
+## 2025/03/04 
+[官網](https://laravel.com/docs/12.x/queries#select-statements)
+
+```php
+// ex:
+use Illuminate\Support\Facades\DB;
+
+$users = DB::table('users')
+    ->select('name', 'email as user_email')
+    ->get();
+
+```
+實際:
+migrations:
+```php
+    public function up(): void
+    {
+        Schema::create('students', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+            $table->string('name');
+            $table->string('mobile');
+        });
+    }
+    
+```
+
+StudentController:
+```php
+    public function index()
+    {
+
+        // $data = DB::table('students')->get();
+        $data = DB::table('students')->select('id','name', 'mobile as my_mobile')->get();
+        dd($data);
+        // return view('student.index',['data'=>$data]);
+    }
+
+```
