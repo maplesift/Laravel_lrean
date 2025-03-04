@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Student;
 class StudentController extends Controller
 {
     /**
@@ -15,8 +16,8 @@ class StudentController extends Controller
         $data = DB::table('students')->get();
         // $data = DB::select('SELECT * FROM students');
         // $data = DB::table('students')->select('id','name', 'mobile as my_mobile')->get();
-        dd($data);
-        // return view('student.index',['data'=>$data]);
+        // dd($data);
+        return view('student.index',['data'=>$data]);
     }
 
     /**
@@ -32,7 +33,22 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+               // dd($request);
+               $input = $request->except('_token');
+               // dd($input);
+       
+               $data = new Student;
+       
+               // $data->name = $request->name;
+               // $data->mobile = $request->mobile;
+       
+               $data->name = $input['name'];
+               $data->mobile = $input['mobile'];
+       
+               $data->save();
+       
+               return redirect()->route('students.index');
+               // return redirect('/students');
     }
 
     /**

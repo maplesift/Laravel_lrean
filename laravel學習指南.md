@@ -243,3 +243,63 @@ StudentController:
     }
 
 ```
+## 新增資料
+===========================================
+- 創建一個Models
+- ex::
+```cmd
+php artisan make:model Flight
+php artisan make:model student
+```
+
+[官網(The Basics/Requests/Accessing the Request)](https://laravel.com/docs/11.x/requests#accessing-the-request)
+
+在StudentController:
+```php
+//使用這個models
+use App\Models\Student;
+```
+在views/student/create.balde.php:
+[官網增改刪查](https://laravel.com/docs/11.x/controllers#resource-controllers)
+```php
+        //路徑為 store 新增                     //方法為post
+  <form action="{{route('students.store')}}" method="POST">
+  //危險指令需要加上 @csrf
+    @csrf
+    <div class="mb-3 mt-3">
+      <label for="name">name:</label>
+      <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
+    </div>
+    <div class="mb-3">
+      <label for="mobile">mobile:</label>
+      <input type="text" class="form-control" id="mobile" placeholder="Enter mobile" name="mobile">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+```
+
+在StudentController:
+```php
+//使用這個models
+use App\Models\Student;
+
+        // dd($request);
+        $input = $request->except('_token');
+        // dd($input);
+
+        $data = new Student;
+
+        // $data->name = $request->name;
+        // $data->mobile = $request->mobile;
+
+        $data->name = $input['name'];
+        $data->mobile = $input['mobile'];
+
+        $data->save();
+
+        return redirect()->route('students.index');
+        // return redirect('/students');
+```
+
+======================================================
