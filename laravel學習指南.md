@@ -198,8 +198,8 @@ return view('student.index',['data'=>$data]);
 ```
 ### 一次建立migrations/controller/resource
 ==================================
-php artisan make:model Apple -mcr
-php artisan make:model Student -mcr
+- php artisan make:model Apple -mcr
+- php artisan make:model Student -mcr
 
 
 
@@ -259,7 +259,7 @@ php artisan make:model student
 //使用這個models
 use App\Models\Student;
 ```
-在views/student/create.balde.php:
+在views/student/create.balde.php:  
 [官網增改刪查](https://laravel.com/docs/11.x/controllers#resource-controllers)
 ```php
         //路徑為 store 新增                     //方法為post
@@ -303,3 +303,50 @@ use App\Models\Student;
 ```
 
 ======================================================
+
+## 03/11 laravel學習 edit(修改)
+=============================================
+- GET	/photos/{photo}/edit	edit	photos.edit
+
+在views/student/創建一個 edit.balde.php  
+在views/student/index.balde.php 增加:
+```php
+      <table class="table">
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>mobile</th>
+            // 多加一欄
+            <th>opt</th>
+          </tr>
+        </thead>
+        <tbody>             
+          @foreach ($data as $val)
+            <tr>
+                <td>{{$val->id}}</td>
+                <td>{{$val->name}} </td>
+                <td>{{$val->mobile}} </td> 
+                <td>
+                // edit的 route內需包參數:id 
+                  <a href="{{route('students.edit',['student'=>$val->id])}}">
+
+                    <button class="btn btn-warning">edit</button>  
+                  </a>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+      </table>
+```
+
+在StudentController:
+```php
+    public function edit(string $id)
+    {
+        // 確保已經抓到edit/$id
+        dd("hi the $id");
+    }
+```
+- 抓到的網址會是: http://localhost/Laravel/Laravel_lrean/public/students/1/edit  
+- student/$id/edit

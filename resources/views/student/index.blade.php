@@ -73,6 +73,7 @@
             <th>id</th>
             <th>name</th>
             <th>mobile</th>
+            <th>opt</th>
           </tr>
         </thead>
         <tbody>
@@ -82,7 +83,12 @@
                 <td>{{$val->id}}</td>
                 <td>{{$val->name}} </td>
                 <td>{{$val->mobile}} </td> 
-           {{-- <td></td> --}}
+                <td>
+                  <a href="{{route('students.edit',['student'=>$val->id])}}">
+
+                    <button class="btn btn-warning">edit</button>  
+                  </a>
+                </td>
             </tr>
 
             @endforeach
