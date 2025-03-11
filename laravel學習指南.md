@@ -200,6 +200,7 @@ return view('student.index',['data'=>$data]);
 ==================================
 - php artisan make:model Apple -mcr
 - php artisan make:model Student -mcr
+- php artisan make:model Flight
 
 
 

@@ -112,8 +112,5 @@ class StudentController extends Controller
 
     }
     
-    public function del()
-    {
-        dd('hi del');
-    }
+
 }
