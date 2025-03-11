@@ -21,7 +21,52 @@
 
           <button class="btn btn-success">add</button>  
         </a>
-      </p>         
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+          Open modal
+        </button>
+      </p>
+      <div class="container mt-3">
+
+        
+      </div>
+      
+      <!-- The Modal -->
+      <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form action="{{route('students.store')}}" method="POST">
+                @csrf
+                <div class="mb-3 mt-3">
+                  <label for="name">name:</label>
+                  <input type="text" class="form-control" id="name" placeholder="Enter name" name="name">
+                </div>
+                <div class="mb-3">
+                  <label for="mobile">mobile:</label>
+                  <input type="text" class="form-control" id="mobile" placeholder="Enter mobile" name="mobile">
+                </div>
+            
+                {{-- <button type="submit" class="btn btn-primary">Submit</button> --}}
+              </div>
+              
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                {{-- <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button> --}}
+              </div>
+            </form>
+      
+          </div>
+        </div>
+      </div>         
       <table class="table">
         <thead>
           <tr>
