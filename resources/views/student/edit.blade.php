@@ -16,8 +16,9 @@
       // dd($data);
   @endphp
 
-  {{-- <form action="{{route('students.update',['students'=>])}}" method="POST"> --}}
+  <form action="{{route('students.update',['student'=>$data['id']])}}" method="POST">
     @csrf
+    @method('put')
     <div class="mb-3 mt-3">
       <label for="name">name:</label>
       <input type="text" class="form-control" id="name" placeholder="Enter name" name="name" value="{{$data['name']}}">

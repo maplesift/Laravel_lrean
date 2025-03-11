@@ -67,11 +67,15 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $url= route('students.edit',['student'=>$id]);
+        
+        // get   = fetchAll
+        // first = fetch
+        // $data = Student::where('id', $id)->first();
         $data = Student::find($id);
         // dd($data);
         // dd($url);
         // dd("hi the $id");
-        return view('student.edit',['data'=>$data,'student'=>$id]);
+        return view('student.edit',['data'=>$data]);
     }
 
     /**
@@ -79,7 +83,17 @@ class StudentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // 把 $request內的  '_token','_method 清除
+        // $input為更新的資料 
+        $input = $request->except('_token','_method');
+        // dd($request);
+        // $data為原始資料
+        $data = Student::find($id);
+        $data->name = $input['name'];
+        $data->mobile = $input['mobile'];
+        $data->save();
+        // 導回首頁
+        return redirect()->route('students.index');
     }
 
     /**
@@ -87,8 +101,17 @@ class StudentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // dd($id);
+        $data = Student::find($id);
+        $data->delete();
+
+        return redirect()->route('students.index');
+// $flight = Flight::find(1);
+ 
+// $flight->delete();
+
     }
+    
     public function del()
     {
         dd('hi del');

@@ -350,3 +350,60 @@ use App\Models\Student;
 ```
 - 抓到的網址會是: http://localhost/Laravel/Laravel_lrean/public/students/1/edit  
 - student/$id/edit
+- 在views/student/edit.balde.php 增加:
+```php
+  <form action="{{route('students.update',['student'=>$data['id']])}}" method="POST">
+    @method('put')
+```
+
+在StudentController:
+```php
+    public function update(Request $request, string $id)
+    {
+        // 把 $request內的  '_token','_method 清除
+        // $input為更新的資料 
+        $input = $request->except('_token','_method');
+        // dd($request);
+        // $data為原始資料
+        $data = Student::find($id);
+        $data->name = $input['name'];
+        $data->mobile = $input['mobile'];
+        $data->save();
+        // 導回首頁
+        return redirect()->route('students.index');
+    }
+```
+
+## 刪除 destroy
+
+- 在views/student/index.balde.php 增加:
+```php
+                    // del需要@csrf   @method('delete')
+                    // 所以用表單包起來
+                    
+
+                  <form action="{{route('students.destroy',['student'=>$val->id])}}" method="post">
+                    @csrf
+                    @method('delete')
+                    <a href="{{ route('students.edit', ['student' => $val->id]) }}"
+                      class="btn btn-warning">edit</a>
+                                // 用submit導去students.destroy
+                      <button type="submit" class="btn btn-danger">del</button>  
+
+                  </form>
+```
+在StudentController:
+```php
+    public function destroy(string $id)
+    {
+        // dd($id);
+        $data = Student::find($id);
+        $data->delete();
+        
+        return redirect()->route('students.index');
+// $flight = Flight::find(1);
+ 
+// $flight->delete();
+
+    }
+```

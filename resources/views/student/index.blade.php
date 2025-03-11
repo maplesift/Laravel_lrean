@@ -84,10 +84,16 @@
                 <td>{{$val->name}} </td>
                 <td>{{$val->mobile}} </td> 
                 <td>
-                  <a href="{{route('students.edit',['student'=>$val->id])}}">
+                  <form action="{{route('students.destroy',['student'=>$val->id])}}" method="post">
+                    @csrf
+                    @method('delete')
+                    <a href="{{ route('students.edit', ['student' => $val->id]) }}"
+                      class="btn btn-warning">edit</a>
 
-                    <button class="btn btn-warning">edit</button>  
-                  </a>
+                    <a href="{{route('students.edit',['student'=>$val->id])}}">
+                      <button type="submit" class="btn btn-danger">del</button>  
+                    </a>
+                  </form>
                 </td>
             </tr>
 
