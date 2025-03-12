@@ -31,6 +31,11 @@
       <label for="phone">phone:</label>
       <input type="text" class="form-control" id="phone" placeholder="Enter phone" name="phone" value="{{$data['phone']['phone']}}">
     </div>
+    <div class="mb-3 mt-3">
+      <label for="hobbies">Hobbies:</label>
+      <input type="text" class="form-control" id="hobbies" placeholder="Enter hobbies" name="hobbies"
+          value="{{ $data['hobbyString'] ?? '' }}">                    
+  </div>
 
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>

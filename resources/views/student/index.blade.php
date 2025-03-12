@@ -87,7 +87,7 @@
                 <td>{{$val->mobile}} </td> 
                 <td>{{$val->phone->phone ?? ''}} </td> 
                 <td>
-                  {{ $val->hobbiesRelation[0]->name ?? ''}}
+                  {{ $val->hobbies}}
                 </td>
                 <td>
                   <form action="{{route('students.destroy',['student'=>$val->id])}}" method="post">
