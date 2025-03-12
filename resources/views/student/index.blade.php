@@ -74,6 +74,7 @@
             <th>name</th>
             <th>mobile</th>
             <th>phone</th>
+            <th>hobby</th>
             <th>opt</th>
           </tr>
         </thead>
@@ -86,6 +87,9 @@
                 <td>{{$val->mobile}} </td> 
                 <td>{{$val->phone->phone ?? ''}} </td> 
                 <td>
+                  {{ $val->hobbiesRelation[0]->name ?? ''}}
+                </td>
+                <td>
                   <form action="{{route('students.destroy',['student'=>$val->id])}}" method="post">
                     @csrf
                     @method('delete')
@@ -97,6 +101,7 @@
                     </a>
                   </form>
                 </td>
+
             </tr>
 
             @endforeach

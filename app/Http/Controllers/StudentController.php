@@ -15,13 +15,23 @@ class StudentController extends Controller
     {
         // dd('hello index');
         // $data = DB::table('students')->get();
-        
         // $data = Student::get();
-        $data = Student::with('phone')->get();
-
+        $data = Student::with('phone')->with('hobbiesRelation')->get();
+        $tmpArr=[];
+        // $data = Student::with('phone')->get();
         // $data = DB::select('SELECT * FROM students');
         // $data = DB::table('students')->select('id','name', 'mobile as my_mobile')->get();
         // dd($data);
+        foreach ($data as $val1) {
+            // dd($val1);
+            // dd($val1->hobbiesRelation);
+            foreach ($val1->hobbiesRelation as $val2) {
+                // dd($val2);
+                array_push($tmpArr,$val2->name);
+            }
+        }
+        dd($tmpArr);
+
         return view('student.index',['data'=>$data]);
     }
 

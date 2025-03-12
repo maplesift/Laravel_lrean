@@ -260,8 +260,8 @@ php artisan make:model student
 //使用這個models
 use App\Models\Student;
 ```
+[官網](https://laravel.com/docs/11.x/controllers#resource-controllers)
 在views/student/create.balde.php:  
-[官網增改刪查](https://laravel.com/docs/11.x/controllers#resource-controllers)
 ```php
         //路徑為 store 新增                     //方法為post
   <form action="{{route('students.store')}}" method="POST">
@@ -311,7 +311,7 @@ use App\Models\Student;
 
 在views/student/創建一個 edit.balde.php  
 在views/student/index.balde.php 增加:
-```php
+```html
       <table class="table">
         <thead>
           <tr>
@@ -411,17 +411,157 @@ use App\Models\Student;
 
 ## 2025/03/12 資料庫一對一,一對多
 =============================
+[官網/Eloquent ORM/Relationships/One to One / Has One](https://laravel.com/docs/11.x/eloquent-relationships#one-to-one)
 - 創一個 Phone的資料表 (給Student用)
 - php artisan make:model Phone -mcr
+
+
 - 在database/migrations:
 ```php
     public function up(): void
     {
         Schema::create('phones', function (Blueprint $table) {
             $table->id();
+            // 關聯資料庫:student_id
             $table->integer('student_id');
             $table->string('phone');
             $table->timestamps();
         });
+    }
+```
+建立資料表
+- php artisan migrate
+
+
+- 在app/Models/Phone.php:
+```php
+use Illuminate\Database\Eloquent\Model;
+// 綁
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+class Phone extends Model
+{                   
+                    // 主表
+    public function student(): BelongsTo
+    {                           
+                                // 主表
+        return $this->belongsTo(Student::class);
+    }
+}
+```
+- 在app/Models/Student.php增加:
+```php
+                                        // 綁定         
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class Student extends Model
+{
+        /**
+     * Get the phone associated with the user.
+     */
+                // 綁在phone
+    public function phone(): HasOne
+    {                       
+                            // 綁在Phone
+        return $this->hasOne(Phone::class);
+    }
+
+}
+```
+在StudentController:
+```php
+// =============================== index
+
+
+    public function index()
+    {
+                        // with 可把子表的資料撈出來
+        $data = Student::with('phone')->get();
+        
+        return view('student.index',['data'=>$data]);
+    }
+// ============================ store
+
+
+//                              新增:
+    public function store(Request $request)
+    {
+               // dd($request);
+               $input = $request->except('_token');
+               // dd($input);
+            // 主表   
+               $data = new Student;
+               $data->name = $input['name'];
+               $data->mobile = $input['mobile'];
+               $data->save();
+            // 子表
+            $item = new Phone;
+            $item->student_id = $data->id;
+            $item->phone = $input['phone'];
+            $item->save();    
+               return redirect()->route('students.index');
+               // return redirect('/students');
+    }
+// ========================= edit頁面
+
+
+        public function edit(string $id)
+    {
+        $url= route('students.edit',['student'=>$id]);
+                    // with 可把子表的資料撈出來
+        $data = Student::with('phone')->find($id);
+
+        return view('student.edit',['data'=>$data]);
+    }
+// ============================ update
+
+
+        public function update(Request $request, string $id)
+    {
+        // 把 $request內的  '_token','_method 清除
+        // $input為更新的資料 
+        $input = $request->except('_token','_method');
+        // $data為原始資料
+        // 主表
+        $data = Student::find($id);
+        $data->name = $input['name'];
+        $data->mobile = $input['mobile'];
+        $data->save();
+        // 子表
+        // 刪除子表
+        // Phone::find(['student_id',$id])->delete();
+                // 刪除子表
+                Phone::where('student_id', $id)->delete();
+        // 子表
+        $item = new Phone;
+        $item->student_id = $data->id;
+        $item->phone = $input['phone'];
+        // 懶人包 不要用foreach 直接複製欄位
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        $item->save();    
+        // 導回首頁
+        return redirect()->route('students.index');
+    }
+// ================================ destroy
+
+
+        public function destroy(string $id)
+    {
+        // dd($id);
+        // 先刪除子表
+        Phone::find($id)->delete();
+        // Phone::where('student_id', $id)->delete();
+        // 刪除主表
+        // Student::where('id', $id)->delete();
+        Student::find($id)->delete();
+        // $data->delete();
+        return redirect()->route('students.index');
     }
 ```
