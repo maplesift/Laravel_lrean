@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Student;
+use App\Models\Phone;
 class StudentController extends Controller
 {
     /**
@@ -15,7 +16,9 @@ class StudentController extends Controller
         // dd('hello index');
         // $data = DB::table('students')->get();
         
-        $data = Student::get();
+        // $data = Student::get();
+        $data = Student::with('phone')->get();
+
         // $data = DB::select('SELECT * FROM students');
         // $data = DB::table('students')->select('id','name', 'mobile as my_mobile')->get();
         // dd($data);
@@ -38,17 +41,16 @@ class StudentController extends Controller
                // dd($request);
                $input = $request->except('_token');
                // dd($input);
-       
+            // 主表   
                $data = new Student;
-       
-               // $data->name = $request->name;
-               // $data->mobile = $request->mobile;
-       
                $data->name = $input['name'];
                $data->mobile = $input['mobile'];
-       
                $data->save();
-       
+            // 子表
+            $item = new Phone;
+            $item->student_id = $data->id;
+            $item->phone = $input['phone'];
+            $item->save();    
                return redirect()->route('students.index');
                // return redirect('/students');
     }
@@ -71,7 +73,8 @@ class StudentController extends Controller
         // get   = fetchAll
         // first = fetch
         // $data = Student::where('id', $id)->first();
-        $data = Student::find($id);
+        $data = Student::with('phone')->find($id);
+        // $data = Student::where('id', $id)->with('phone')->first();
         // dd($data);
         // dd($url);
         // dd("hi the $id");
@@ -88,10 +91,31 @@ class StudentController extends Controller
         $input = $request->except('_token','_method');
         // dd($request);
         // $data為原始資料
+        // 主表
         $data = Student::find($id);
         $data->name = $input['name'];
         $data->mobile = $input['mobile'];
         $data->save();
+        // 子表
+        // 刪除子表
+        // Phone::find(['student_id',$id])->delete();
+                // 刪除子表
+                Phone::where('student_id', $id)->delete();
+        // 子表
+        $item = new Phone;
+        $item->student_id = $data->id;
+        $item->phone = $input['phone'];
+        // 懶人包 不要用foreach 直接複製欄位
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        // $item->phone = $input['phone'];
+        $item->save();    
         // 導回首頁
         return redirect()->route('students.index');
     }
@@ -102,14 +126,14 @@ class StudentController extends Controller
     public function destroy(string $id)
     {
         // dd($id);
-        $data = Student::find($id);
-        $data->delete();
-
+        // 刪除子表
+        Phone::find($id)->delete();
+        // Phone::where('student_id', $id)->delete();
+        // 刪除主表
+        // Student::where('id', $id)->delete();
+        Student::find($id)->delete();
+        // $data->delete();
         return redirect()->route('students.index');
-// $flight = Flight::find(1);
- 
-// $flight->delete();
-
     }
     
 

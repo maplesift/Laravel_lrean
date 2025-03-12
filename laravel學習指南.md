@@ -408,3 +408,20 @@ use App\Models\Student;
 
     }
 ```
+
+## 2025/03/12 資料庫一對一,一對多
+=============================
+- 創一個 Phone的資料表 (給Student用)
+- php artisan make:model Phone -mcr
+- 在database/migrations:
+```php
+    public function up(): void
+    {
+        Schema::create('phones', function (Blueprint $table) {
+            $table->id();
+            $table->integer('student_id');
+            $table->string('phone');
+            $table->timestamps();
+        });
+    }
+```
